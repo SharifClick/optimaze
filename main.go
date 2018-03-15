@@ -3,7 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"image"
 	"image/jpeg"
+	_ "image/jpeg"
+	_ "image/png"
 	"io/ioutil"
 	"log"
 	"os"
@@ -39,6 +42,7 @@ func main() {
 	w64, _ := strconv.ParseUint(string(p[0]), 10, 64)
 	h64, _ := strconv.ParseUint(string(p[1]), 10, 64)
 	q64, _ := strconv.ParseInt(string(p[2]), 10, 64)
+	op := p[3]
 
 	width := uint(w64)
 	height := uint(h64)
@@ -53,7 +57,23 @@ func main() {
 		//fmt.Println(f.Name())
 		input := "./input/"
 		input += f.Name()
-		fmt.Println(f.Name())
+		fmt.Println(input)
+
+		imwInt, imhInt := getFileInfo(input)
+		imw := uint(imwInt)
+		imh := uint(imhInt)
+
+		switch op {
+		case "h":
+			width = imw / 2
+			height = imh / 2
+		case "q":
+			width = imw / 4
+			height = imh / 4
+		default:
+			width = imw
+			height = imh
+		}
 
 		file, err := os.Open(input)
 		if err != nil {
@@ -65,7 +85,10 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+
 		file.Close()
+
+		fmt.Println("Width:", width, "Height:", height)
 
 		var opt jpeg.Options
 
@@ -87,4 +110,17 @@ func main() {
 		jpeg.Encode(out, m, &opt)
 	}
 
+}
+
+func getFileInfo(imgPath string) (int, int) {
+	file, err := os.Open(imgPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	im, _, err := image.DecodeConfig(file) // Image Struct
+	if err != nil {
+		log.Fatal(err)
+	}
+	return im.Width, im.Height
 }
