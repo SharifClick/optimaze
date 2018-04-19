@@ -1,30 +1,23 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"image"
 	"image/jpeg"
+	_ "image/jpeg"
+	_ "image/png"
 	"io/ioutil"
 	"log"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/nfnt/resize"
 )
 
 func main() {
-
-	// dir, _ := filepath.Abs("./")
-	// fmt.Println(dir)
-
-	// file, err := os.Create("text.txt")
-	// if err != nil {
-	// 	return
-	// }
-	// defer file.Close()
-
-	// file.WriteString(dir)
-
+	// open "test.jpg"
 	if _, err := os.Stat("./input"); os.IsNotExist(err) {
 		err = os.Mkdir("input", 0777)
 		if err != nil {
@@ -38,11 +31,18 @@ func main() {
 		}
 	}
 
-	p := os.Args
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("- OPTIMAZE - Image optimizer by Sharif")
+	fmt.Println("Put your JPG image/s in 'input' folder")
+	fmt.Println("width,height,quality,")
+	text, _ := reader.ReadString('\n')
 
-	w64, _ := strconv.ParseUint(string(p[1]), 10, 64)
-	h64, _ := strconv.ParseUint(string(p[2]), 10, 64)
-	q64, _ := strconv.ParseInt(string(p[3]), 10, 64)
+	p := strings.Split(text, ",")
+
+	w64, _ := strconv.ParseUint(string(p[0]), 10, 64)
+	h64, _ := strconv.ParseUint(string(p[1]), 10, 64)
+	q64, _ := strconv.ParseInt(string(p[2]), 10, 64)
+	op := p[3]
 
 	width := uint(w64)
 	height := uint(h64)
@@ -59,22 +59,21 @@ func main() {
 		input += f.Name()
 		fmt.Println(input)
 
-		// imwInt, imhInt := getFileInfo(input)
-		// imw := uint(imwInt)
-		// imh := uint(imhInt)
-		// fmt.Println(*autoSize)
+		imwInt, imhInt := getFileInfo(input)
+		imw := uint(imwInt)
+		imh := uint(imhInt)
 
-		// switch *autoSize {
-		// case "half":
-		// 	width = imw / 2
-		// 	height = imh / 2
-		// case "quarter":
-		// 	width = imw / 4
-		// 	height = imh / 4
-		// default:
-		// 	width = imw
-		// 	height = imh
-		// }
+		switch op {
+		case "h":
+			width = imw / 2
+			height = imh / 2
+		case "q":
+			width = imw / 4
+			height = imh / 4
+		default:
+			width = imw
+			height = imh
+		}
 
 		file, err := os.Open(input)
 		if err != nil {
@@ -89,7 +88,7 @@ func main() {
 
 		file.Close()
 
-		//	fmt.Println("Width:", width, "Height:", height)
+		fmt.Println("Width:", width, "Height:", height)
 
 		var opt jpeg.Options
 
