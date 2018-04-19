@@ -16,9 +16,9 @@ quality must be 0-100
 optimaze 0 0 50
 ```
 
-Reduce 50% quality with the same size without a big changes in visiblity 
+Reduce 92% quality without a big impact on visiblity
 
 | Original image (2,759 KB) | Optimized image (212 KB) |
 |:--:|:--:|
-| ![Image of Yaktocat](https://github.com/SharifClick/optimaze/blob/master/image.jpg) | ![Image of Yaktocat](https://github.com/SharifClick/optimaze/blob/master/image_reduced.jpg) | 
+| ![original](https://github.com/SharifClick/optimaze/blob/master/image.jpg) | ![optimized](https://github.com/SharifClick/optimaze/blob/master/image_reduced.jpg) | 
 
