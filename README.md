@@ -1,5 +1,6 @@
 # Optimaze
-A tiny image optimizer written in GO (currently supported JPEG )
+A tiny image optimizer written in GO (currently supported JPEG)
+(tiny step towards my GOPHER jouerny :) )
 
 ## Installation
 
@@ -16,7 +17,7 @@ quality must be 0-100
 optimaze 0 0 50
 ```
 
-Reduce 92% quality without a big impact on visiblity
+Reduced 92% size without a big impact on quality
 
 | Original image (2,759 KB) | Optimized image (212 KB) |
 |:--:|:--:|
